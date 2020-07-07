@@ -1,2 +1,2 @@
 # ml-from-scratch
-Building machine learning models without any packages(except Numpy)
+Building machine learning models with only numpy
