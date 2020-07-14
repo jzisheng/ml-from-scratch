@@ -4,6 +4,7 @@ Neural network with hidden layer
 from sklearn import datasets
 import matplotlib.pyplot as plt
 import matplotlib
+import math
 matplotlib.use('Agg')
 
 import numpy as np
@@ -65,7 +66,7 @@ class myNeuralNetwork():
         self.weights[0] -= self.dw1*self.lr
         
     def fit(self,x,y): 
-        for epoch in range(500):
+        for epoch in range(800):
             for idx in range(x.shape[0]):
                 self.backprop(x[idx],y[idx])
             if epoch%10 == 0:
@@ -74,15 +75,21 @@ class myNeuralNetwork():
         pass
 
     def plotMesh(self,x,y,epoch=0):
-        x_ = np.arange(-5, 5, 0.1)
-        y_ = np.arange(-5, 5, 0.1)
+        x_ = np.arange(-2, 3, 0.1)
+        y_ = np.arange(-2, 3, 0.1)
         xx, yy = np.meshgrid(x_, y_)
         xx,yy = xx.reshape(-1,1), yy.reshape(-1,1)
+        # Forward meshgrid
+
         Xb = np.hstack([xx,yy,np.ones((yy.shape[0],1))])
-        z1 = model.forward(Xb).reshape(100,100)
+        square = int(math.sqrt(Xb.shape[0])) # for converting dimension to 2d
+        
+        z1 = model.forward(Xb).reshape(square,square)
         plt.contourf(x_,y_,z1,cmap='RdBu')
-        plt.scatter(x[:,0],x[:,1],s=1,c=y,cmap='RdBu')
-        plt.savefig("epoch-{}.png".format(epoch))
+        plt.scatter(x[:,0],x[:,1],s=5,c=y,cmap='RdBu')
+        plt.xlim(-2,3)
+        plt.ylim(-2,3)
+        plt.savefig("images/epoch-{}.png".format(epoch))
         
 
 
